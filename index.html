@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메모장 - 이미지 삽입 에디터</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 사이드바 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>메모장</h1>
+                <button id="theme-toggle-btn">☀️</button>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="메모 검색...">
+            </div>
+
+            <div class="tag-filter-bar">
+                <label for="tag-filter">태그 필터</label>
+                <select id="tag-filter">
+                    <option value="">전체</option>
+                </select>
+            </div>
+
+            <div id="memo-list"></div>
+        </div>
+
+        <!-- 메인 에디터 영역 -->
+        <div class="main-content">
+            <div class="main-header">
+                <button id="new-memo-btn">새 메모</button>
+            </div>
+
+            <div id="memo-input-area">
+                <div class="memo-input">
+
+                    <div class="title-bar">
+                        <input type="text" id="memo-title" placeholder="제목을 입력하세요...">
+                        <input type="date" id="memo-date">
+                    </div>
+
+                    <input type="text" id="memo-tags" placeholder="태그 입력... (쉼표로 구분)">
+
+                    <div class="image-input-bar">
+                        <label for="image-input" class="image-input-label">📎 이미지 추가</label>
+                        <input type="file" id="image-input" accept="image/*" multiple>
+                    </div>
+
+                    <!-- 썸네일 영역 -->
+                    <div id="image-preview" class="image-preview"></div>
+
+                    <!-- 🔥 내용 입력을 contenteditable div로 변경 -->
+                    <div id="memo-text" class="editor" contenteditable="true"></div>
+
+                    <div class="action-bar">
+                        <button id="save-btn">저장</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="script.js"></script>
+</body>
+</html>
+/* 공통 */
+* { box-sizing: border-box; margin:0; padding:0; }
+body {
+    font-family: sans-serif;
+    background:#222; color:#fff;
+}
+body.light-theme { background:#f5f5f5; color:#222; }
+
+.app-container { display:flex; height:100vh; }
+
+/* 사이드바 */
+.sidebar {
+    width:260px; background:#2f3136; padding:16px; display:flex; flex-direction:column;
+}
+.sidebar-header { display:flex; justify-content:space-between; align-items:center; }
+#theme-toggle-btn { background:none; border:none; color:inherit; font-size:20px; cursor:pointer; }
+.search-bar input, #tag-filter {
+    width:100%; padding:8px; margin-top:10px; border-radius:6px; border:none;
+    background:#18191c; color:#fff;
+}
+#memo-list { flex:1; overflow-y:auto; margin-top:12px; }
+
+.memo-item { background:#36393f; padding:8px; border-radius:6px; margin-bottom:8px; cursor:pointer; }
+
+/* 메인 */
+.main-content { flex:1; padding:16px; display:flex; flex-direction:column; background:#18191c; }
+#memo-input-area { flex:1; background:#202225; padding:12px; border-radius:8px; }
+
+.memo-input { display:flex; flex-direction:column; height:100%; gap:10px; }
+.title-bar { display:flex; gap:8px; }
+.title-bar input, #memo-tags {
+    flex:1; padding:8px; border:none; border-radius:6px; background:#18191c; color:#fff;
+}
+
+/* 이미지 업로드 버튼 */
+.image-input-label {
+    background:#3b82f6; color:#fff; padding:6px 10px; border-radius:6px; cursor:pointer;
+}
+#image-input { display:none; }
+
+/* 썸네일 */
+.image-preview { display:flex; gap:8px; flex-wrap:wrap; }
+.image-thumb {
+    width:70px; height:70px; position:relative; border-radius:6px; overflow:hidden;
+}
+.image-thumb img { width:100%; height:100%; object-fit:cover; }
+.image-thumb button {
+    position:absolute; top:2px; right:2px; border:none; width:20px; height:20px;
+    background:rgba(0,0,0,0.6); color:#fff; border-radius:50%; cursor:pointer;
+}
+
+/* 🔥 에디터 */
+.editor {
+    flex:1;
+    padding:10px;
+    background:#18191c;
+    color:#fff;
+    border-radius:6px;
+    overflow-y:auto;
+}
+.editor img {
+    max-width:100%;
+    border-radius:6px;
+    margin-top:8px;
+}
+
+/* 저장 버튼 */
+.action-bar { display:flex; justify-content:flex-end; }
+#save-btn {
+    padding:8px 16px; border:none; background:#4caf50; color:#fff;
+    border-radius:6px; cursor:pointer;
+}
+/* 공통 */
+* { box-sizing: border-box; margin:0; padding:0; }
+body {
+    font-family: sans-serif;
+    background:#222; color:#fff;
+}
+body.light-theme { background:#f5f5f5; color:#222; }
+
+.app-container { display:flex; height:100vh; }
+
+/* 사이드바 */
+.sidebar {
+    width:260px; background:#2f3136; padding:16px; display:flex; flex-direction:column;
+}
+.sidebar-header { display:flex; justify-content:space-between; align-items:center; }
+#theme-toggle-btn { background:none; border:none; color:inherit; font-size:20px; cursor:pointer; }
+.search-bar input, #tag-filter {
+    width:100%; padding:8px; margin-top:10px; border-radius:6px; border:none;
+    background:#18191c; color:#fff;
+}
+#memo-list { flex:1; overflow-y:auto; margin-top:12px; }
+
+.memo-item { background:#36393f; padding:8px; border-radius:6px; margin-bottom:8px; cursor:pointer; }
+
+/* 메인 */
+.main-content { flex:1; padding:16px; display:flex; flex-direction:column; background:#18191c; }
+#memo-input-area { flex:1; background:#202225; padding:12px; border-radius:8px; }
+
+.memo-input { display:flex; flex-direction:column; height:100%; gap:10px; }
+.title-bar { display:flex; gap:8px; }
+.title-bar input, #memo-tags {
+    flex:1; padding:8px; border:none; border-radius:6px; background:#18191c; color:#fff;
+}
+
+/* 이미지 업로드 버튼 */
+.image-input-label {
+    background:#3b82f6; color:#fff; padding:6px 10px; border-radius:6px; cursor:pointer;
+}
+#image-input { display:none; }
+
+/* 썸네일 */
+.image-preview { display:flex; gap:8px; flex-wrap:wrap; }
+.image-thumb {
+    width:70px; height:70px; position:relative; border-radius:6px; overflow:hidden;
+}
+.image-thumb img { width:100%; height:100%; object-fit:cover; }
+.image-thumb button {
+    position:absolute; top:2px; right:2px; border:none; width:20px; height:20px;
+    background:rgba(0,0,0,0.6); color:#fff; border-radius:50%; cursor:pointer;
+}
+
+/* 🔥 에디터 */
+.editor {
+    flex:1;
+    padding:10px;
+    background:#18191c;
+    color:#fff;
+    border-radius:6px;
+    overflow-y:auto;
+}
+.editor img {
+    max-width:100%;
+    border-radius:6px;
+    margin-top:8px;
+}
+
+/* 저장 버튼 */
+.action-bar { display:flex; justify-content:flex-end; }
+#save-btn {
+    padding:8px 16px; border:none; background:#4caf50; color:#fff;
+    border-radius:6px; cursor:pointer;
+}
