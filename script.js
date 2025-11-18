@@ -1,4 +1,4 @@
-// DOM 요소들 ---------------------------------------------------------------
+// DOM 요소들 --------------------------------------------------------------
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
 const memoListEl = document.getElementById('memo-list');
 const newMemoBtn = document.getElementById('new-memo-btn');
